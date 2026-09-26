@@ -13,7 +13,6 @@ export default async function ProviderDetail({
   const provider = providers.find((item) => item.id === id);
   if (!provider) notFound();
 
-  const phoneNumber = provider.phone.replace(/[^+\d]/g, "");
 
   return (
     <>
@@ -42,29 +41,20 @@ export default async function ProviderDetail({
                 {provider.area && <p><strong>พื้นที่:</strong> {provider.area}</p>}
                 {provider.serviceArea && <p><strong>พื้นที่ให้บริการ:</strong> {provider.serviceArea}</p>}
               </div>
-              <div className="contact-actions flex flex-wrap gap-3">
-                {provider.phone && phoneNumber && (
-                  <a className="btn-primary rounded-lg bg-zinc-900 px-4 py-2 text-white dark:bg-white dark:text-zinc-900" href={`tel:${phoneNumber}`}>
-                    โทร {provider.phone}
-                  </a>
-                )}
-                {provider.email && (
-                  <a className="btn-outline rounded-lg border border-zinc-300 px-4 py-2 dark:border-zinc-700" href={`mailto:${provider.email}`}>
-                    อีเมล
-                  </a>
-                )}
-                {provider.website && (
-                  <a className="btn-outline rounded-lg border border-zinc-300 px-4 py-2 dark:border-zinc-700" href={provider.website} target="_blank" rel="noopener noreferrer">
-                    เว็บไซต์ / ผลงาน ↗
-                  </a>
-                )}
-                {provider.facebook && (
-                  <a className="btn-outline rounded-lg border border-zinc-300 px-4 py-2 dark:border-zinc-700" href={provider.facebook} target="_blank" rel="noopener noreferrer">Facebook ↗</a>
-                )}
-                {provider.line && (
-                  <a className="btn-outline rounded-lg border border-zinc-300 px-4 py-2 dark:border-zinc-700" href={provider.line} target="_blank" rel="noopener noreferrer">LINE ↗</a>
-                )}
-              </div>
+              {(provider.phone || provider.email || provider.facebook || provider.line) && (
+                <dl className="contact-info">
+                  {provider.phone && <div><dt>โทรศัพท์</dt><dd>{provider.phone}</dd></div>}
+                  {provider.email && <div><dt>อีเมล</dt><dd>{provider.email}</dd></div>}
+                  {provider.facebook && <div><dt>Facebook</dt><dd>{provider.facebook}</dd></div>}
+                  {provider.line && <div><dt>LINE</dt><dd>{provider.line}</dd></div>}
+                </dl>
+              )}
+              {(provider.website || provider.portfolio) && (
+                <div className="contact-actions flex flex-wrap gap-3">
+                  {provider.website && <a className="btn-outline rounded-lg border border-zinc-300 px-4 py-2" href={provider.website} target="_blank" rel="noopener noreferrer">เว็บไซต์ ↗</a>}
+                  {provider.portfolio && <a className="btn-outline rounded-lg border border-zinc-300 px-4 py-2" href={provider.portfolio} target="_blank" rel="noopener noreferrer">ผลงาน ↗</a>}
+                </div>
+              )}
             </div>
           </div>
           {provider.details.length > 0 && (

@@ -10,6 +10,7 @@ export interface Provider {
   phone: string;
   email: string;
   website: string;
+  portfolio: string;
   facebook: string;
   line: string;
   image: string;
@@ -105,9 +106,10 @@ export async function getProviders(): Promise<Provider[]> {
       serviceArea: text(row.service_area),
       phone: text(row.phone_main),
       email: emailAddress(emailWeb),
-      website: contactUrl && !/facebook\.com|line\.me/i.test(contactUrl) ? contactUrl : portfolioUrl && !/facebook\.com|line\.me/i.test(portfolioUrl) ? portfolioUrl : "",
-      facebook: /facebook\.com/i.test(contactUrl) ? contactUrl : /facebook\.com/i.test(portfolioUrl) ? portfolioUrl : "",
-      line: /line\.me/i.test(contactUrl) ? contactUrl : /line\.me/i.test(portfolioUrl) ? portfolioUrl : "",
+      website: contactUrl && !/facebook\.com|line\.me/i.test(new URL(contactUrl).hostname) ? contactUrl : "",
+      portfolio: portfolioUrl && portfolioUrl !== contactUrl ? portfolioUrl : "",
+      facebook: contactUrl && /facebook\.com/i.test(new URL(contactUrl).hostname) ? contactUrl : "",
+      line: contactUrl && /line\.me/i.test(new URL(contactUrl).hostname) ? contactUrl : "",
       image: "",
       details: detailFields.flatMap(([key, label]) => {
         const value = text(row[key]);
