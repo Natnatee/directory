@@ -20,6 +20,10 @@
 # production
 /build
 
+# Private source-data snapshots
+/data/private/
+/data.json
+
 # misc
 .DS_Store
 *.pem

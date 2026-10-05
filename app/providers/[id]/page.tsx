@@ -24,12 +24,12 @@ export default async function ProviderDetail({
         </Link>
         <article className="mt-8 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
           <div className="detail-top grid md:grid-cols-[minmax(0,1fr)_2fr]">
-            <div className="detail-image flex min-h-60 items-center justify-center bg-zinc-100 p-6 text-center text-3xl font-semibold text-zinc-600">
-              <Image src="/Cover Facebook02.jpg" width={600} height={350} alt="กราฟิกภาพยนตร์และเมืองพัทยา" className="w-full h-auto" />
+            <div className="detail-image flex min-h-60 items-center justify-center bg-zinc-100">
+              {provider.image && <Image src={provider.image} width={600} height={400} unoptimized alt={provider.name || provider.nameEn} className="h-full w-full object-cover" />}
             </div>
             <div className="detail-main space-y-5 p-6 md:p-10">
-              {provider.category && (
-                <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{provider.category}</p>
+              {provider.categories.length > 0 && (
+                <p className="text-sm font-medium text-zinc-500 dark:text-zinc-400">{provider.categories.join(" / ")}</p>
               )}
               <div>
                 <h1 className="text-3xl font-bold">{provider.name || provider.nameEn}</h1>
@@ -39,7 +39,7 @@ export default async function ProviderDetail({
               </div>
               <div className="detail-meta space-y-2 text-sm">
                 {provider.area && <p><strong>พื้นที่:</strong> {provider.area}</p>}
-                {provider.serviceArea && <p><strong>พื้นที่ให้บริการ:</strong> {provider.serviceArea}</p>}
+                <p><strong>พื้นที่ให้บริการ:</strong> {provider.serviceArea || provider.area || "ไม่ระบุพื้นที่"}</p>
               </div>
               {(provider.phone || provider.email || provider.facebook || provider.line) && (
                 <dl className="contact-info">
@@ -57,6 +57,22 @@ export default async function ProviderDetail({
               )}
             </div>
           </div>
+          {provider.images.length > 0 && (
+            <section className="border-t border-zinc-200 p-6 dark:border-zinc-800 md:p-10" aria-label="รูปภาพผู้ให้บริการ">
+              <h2 className="mb-6 text-xl font-semibold">รูปภาพ</h2>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {provider.images.map((image, index) => (
+                  <Image key={`${image}-${index}`} src={image} alt={`${provider.name || provider.nameEn} รูปที่ ${index + 1}`} width={600} height={400} unoptimized className="aspect-[3/2] h-auto w-full rounded-lg object-cover" />
+                ))}
+              </div>
+            </section>
+          )}
+          {provider.description && (
+            <section className="border-t border-zinc-200 p-6 dark:border-zinc-800 md:p-10" aria-label="รายละเอียดผู้ให้บริการ">
+              <h2 className="mb-6 text-xl font-semibold">รายละเอียด</h2>
+              <p className="whitespace-pre-line">{provider.description}</p>
+            </section>
+          )}
           {provider.details.length > 0 && (
             <section className="detail-fields border-t border-zinc-200 p-6 dark:border-zinc-800 md:p-10" aria-label="ข้อมูลเพิ่มเติม">
               <h2 className="mb-6 text-xl font-semibold">ข้อมูลเพิ่มเติม</h2>
